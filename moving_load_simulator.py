@@ -2,7 +2,7 @@
 Module name: moving_load_simulator.py
 Purpose: Simulate a vehicle moving over a simply supported beam
 Author: Kelvin Macharia W
-Year: August 2021.
+Year: August 2021
 """
 
 from decimal import Decimal, getcontext
