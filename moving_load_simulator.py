@@ -4,7 +4,6 @@ Purpose: Simulate a vehicle moving over a simply supported beam
 Author: Kelvin Macharia W
 Year: August 2021
 """
-
 from decimal import Decimal, getcontext
 from logging import basicConfig, DEBUG, debug,disable
 from sys import argv
