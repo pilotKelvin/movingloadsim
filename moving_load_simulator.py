@@ -87,7 +87,6 @@ class MovingLoadSimulator():
 
 if __name__ == '__main__':
     # supply testing inputs
-
     beam_length = 30
     moving_interval = 0.5
     axle_positions = [0, 1.2, 2.4, 3.6, 4.8, 6.0]
@@ -97,6 +96,6 @@ if __name__ == '__main__':
 
 # Next assignment - Tue 03/08/2021
 # 1. Refactor self.fn_simulate_moving_vehicle() especially output data type. Consider Series or dataFrame as output
-
+# 2. See if the two functions in this class can be merged
 
 
