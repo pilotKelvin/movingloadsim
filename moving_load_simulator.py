@@ -83,7 +83,7 @@ class MovingLoadSimulator():
                     ordinates_lst.append(ordinate)
                 axles_influence_ordinates_dict[step] = ordinates_lst
 
-        return axles_influence_ordinates_dict # return dict with influence ordinates
+        return axles_influence_ordinates_dict  # return dict with influence ordinates
 
 if __name__ == '__main__':
     # supply testing inputs
