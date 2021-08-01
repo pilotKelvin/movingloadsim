@@ -96,5 +96,6 @@ if __name__ == '__main__':
 # Next assignment - Tue 03/08/2021
 # 1. Refactor self.fn_simulate_moving_vehicle() especially output data type. Consider Series or dataFrame as output
 # 2. See if the two functions in this class can be merged
+# 3. Add comments
 
 
