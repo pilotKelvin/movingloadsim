@@ -38,7 +38,7 @@ class MovingLoadSimulator:
         :param beam_length_:
         :param moving_interval_:
         :param axle_positions_:
-        :return: axle_location_arr
+        :return axle_location_arr:
         """
         # generates points along the beam at the moving interval provided
         steps_to_move_arr = np.append(np.arange(0, beam_length_, moving_interval_), self.beam_length)
