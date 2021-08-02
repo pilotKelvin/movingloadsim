@@ -46,34 +46,33 @@ class MovingLoadSimulator:
         no_of_steps_to_move = steps_to_move_arr.size
         # initialize an empty array to store axle locations later
         # Each row stores axle positions for point_x. No. of rows are equal to points generated
-        axle_location_arr = np.empty([no_of_steps_to_move, len(axle_positions_)], dtype=float)
+        axle_locations_arr = np.empty([no_of_steps_to_move, len(axle_positions_)], dtype=float)
 
         # find axle positions of each point generated
         for index, point_x in enumerate(steps_to_move_arr):
-            axle_location_arr[index][0] = point_x  # any point_x along the beam is always the location of the first axle
+            axle_locations_arr[index][0] = point_x  # any point_x along the beam is always the location of the first axle
             for index_, axle_position in enumerate(axle_positions_):
                 if axle_position == 0:  # first axle position coincides with point_x
                     pass
                 else:
                     position = round(point_x - axle_position,
                                      2)  # compute each axle position in relation to point_x except for first axle
-                    axle_location_arr[index][index_] = position  # append each axle position to axle_location_arr.
+                    axle_locations_arr[index][index_] = position  # append each axle position to axle_location_arr.
                     # Each row of the axle_location_arr represents axle positions for point_x
 
         # compute influence lines
-        influence_ordinates = axle_location_arr.copy()  # make a copy of axle locations
-        influence_ordinates = (beam_length_ - influence_ordinates) / beam_length_  # compute influence line ordinates
-        influence_ordinates[influence_ordinates > 1] = 0  # filter out values greater than one
+        influence_ordinates_arr = axle_locations_arr.copy()  # make a copy of axle locations
+        influence_ordinates_arr = (beam_length_ - influence_ordinates_arr) / beam_length_  # compute influence line ordinates
+        influence_ordinates_arr[influence_ordinates_arr > 1] = 0  # filter out values greater than one
         # round off values in the influence ordinate array. Use for loop to round values in each row since round takes 1 D array
-        for index, row in enumerate(influence_ordinates):
-            influence_ordinates[index] = np.round(row, 2)
+        for index, row in enumerate(influence_ordinates_arr):
+            influence_ordinates_arr[index] = np.round(row, 2)
 
-        debug(f"{axle_location_arr.ndim}")
+        debug(f"{axle_locations_arr.ndim}")
         debug("********************")
-        debug(f"{influence_ordinates.ndim}")
+        debug(f"{influence_ordinates_arr.ndim}")
 
-        return axle_location_arr  # return numpy array with all axle positions at each point along the beam
-
+        return axle_locations_arr  # return numpy array with all axle positions at each point along the beam
 
 if __name__ == '__main__':
     # supply testing inputs
