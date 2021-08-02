@@ -87,3 +87,4 @@ if __name__ == '__main__':
 # 1. Refactor self.fn_simulate_moving_vehicle() especially output data type. Consider Series or dataFrame as output
 # 2. Add comments
 # 3. Test with more data. Prepare example data output to be checked by Spencer
+# 4. Return value
