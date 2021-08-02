@@ -50,7 +50,8 @@ class MovingLoadSimulator:
 
         # find axle positions of each point generated
         for index, point_x in enumerate(steps_to_move_arr):
-            axle_locations_arr[index][0] = point_x  # any point_x along the beam is always the location of the first axle
+            axle_locations_arr[index][
+                0] = point_x  # any point_x along the beam is always the location of the first axle
             for index_, axle_position in enumerate(axle_positions_):
                 if axle_position == 0:  # first axle position coincides with point_x
                     pass
@@ -62,7 +63,8 @@ class MovingLoadSimulator:
 
         # compute influence lines
         influence_ordinates_arr = axle_locations_arr.copy()  # make a copy of axle locations
-        influence_ordinates_arr = (beam_length_ - influence_ordinates_arr) / beam_length_  # compute influence line ordinates
+        influence_ordinates_arr = (
+                                              beam_length_ - influence_ordinates_arr) / beam_length_  # compute influence line ordinates
         influence_ordinates_arr[influence_ordinates_arr > 1] = 0  # filter out values greater than one
         # round off values in the influence ordinate array. Use for loop to round values in each row since round takes 1 D array
         for index, row in enumerate(influence_ordinates_arr):
@@ -73,6 +75,7 @@ class MovingLoadSimulator:
         debug(f"{influence_ordinates_arr.ndim}")
 
         return axle_locations_arr  # return numpy array with all axle positions at each point along the beam
+
 
 if __name__ == '__main__':
     # supply testing inputs
@@ -88,4 +91,3 @@ if __name__ == '__main__':
 # 3. Test with more data. Prepare example data output to be checked by Spencer
 # 4. Return value
 
-## Token Authentication works
