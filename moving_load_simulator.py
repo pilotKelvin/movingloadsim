@@ -79,6 +79,5 @@ if __name__ == '__main__':
     sim_data = MovingLoadSimulator()(beam_length, moving_interval, axle_positions)
     print(sim_data)
 
-# Next assignment - Tue 06/08/2021
-# 1. Test with more data.
-# 2. Prepare example data output to be checked by Spencer
+# Next assignment
+
