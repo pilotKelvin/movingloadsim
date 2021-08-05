@@ -14,13 +14,14 @@ import pandas as pd
 import sympy as sp
 
 basicConfig(level=DEBUG, format=' %(message)s')
-# disable()
-
-getcontext().prec = 2
-
+disable()
+# pandas settings to display all data
+pd.set_option('display.max_rows', None)
+pd.set_option('display.max_columns', None)
+pd.set_option('display.width', None)
 
 class MovingLoadSimulator:
-    def __init__(self, beam_length, moving_interval, axle_positions):
+    def __call__(self, beam_length: float, moving_interval: float, axle_positions: list):
         """
         :param beam_length:
         :param moving_interval:
@@ -28,66 +29,56 @@ class MovingLoadSimulator:
         """
         self.beam_length = beam_length
         self.moving_interval = moving_interval
-        self.axle_positions = axle_positions
+        self.axle_positions = np.array(axle_positions)
 
-        self.fn_simulate_moving_vehicle(self.beam_length, self.moving_interval, self.axle_positions)
+        self.sim_data = self.fn_simulate_moving_vehicle(self.beam_length, self.moving_interval, self.axle_positions)
 
-    def fn_simulate_moving_vehicle(self, beam_length_: float, moving_interval_: float, axle_positions_: list) -> np:
+        return self.sim_data
+    def fn_simulate_moving_vehicle(self, beam_length_: float, moving_interval_: float, axle_positions_: np) -> np:
         """
         This function generates position of each axle along the beam as the vehicle move
         :param beam_length_:
         :param moving_interval_:
         :param axle_positions_:
-        :return axle_location_arr:
+        :return axle_locations_pdsr, influence_ordinates_pdsr:
         """
         # generates points along the beam at the moving interval provided
-        steps_to_move_arr = np.append(np.arange(0, beam_length_, moving_interval_), self.beam_length)
-        # get the number of points generated
-        no_of_steps_to_move = steps_to_move_arr.size
+        xpoints_along_beam = np.append(np.arange(0, beam_length_, moving_interval_), self.beam_length)
+        # get the number of points generate d
+        no_of_xpoints = xpoints_along_beam.size
         # initialize an empty array to store axle locations later
         # Each row stores axle positions for point_x. No. of rows are equal to points generated
-        axle_locations_arr = np.empty([no_of_steps_to_move, len(axle_positions_)], dtype=float)
+        axle_locations_arr = np.empty([no_of_xpoints, len(axle_positions_)], dtype=float)
 
         # find axle positions of each point generated
-        for index, point_x in enumerate(steps_to_move_arr):
-            axle_locations_arr[index][
-                0] = point_x  # any point_x along the beam is always the location of the first axle
-            for index_, axle_position in enumerate(axle_positions_):
-                if axle_position == 0:  # first axle position coincides with point_x
-                    pass
-                else:
-                    position = round(point_x - axle_position,
-                                     2)  # compute each axle position in relation to point_x except for first axle
-                    axle_locations_arr[index][index_] = position  # append each axle position to axle_location_arr.
-                    # Each row of the axle_location_arr represents axle positions for point_x
+        for index, point_x in enumerate(xpoints_along_beam):
+            positions = np.round(point_x - axle_positions, 2)  # compute each axle position in relation to point_x except for first axle
+            axle_locations_arr[index] = positions  # append each axle position to axle_location_arr.
 
         # compute influence lines
         influence_ordinates_arr = axle_locations_arr.copy()  # make a copy of axle locations
-        influence_ordinates_arr = (
-                                              beam_length_ - influence_ordinates_arr) / beam_length_  # compute influence line ordinates
+        influence_ordinates_arr = np.round(((beam_length_ - influence_ordinates_arr) / beam_length_), decimals=2)
         influence_ordinates_arr[influence_ordinates_arr > 1] = 0  # filter out values greater than one
-        # round off values in the influence ordinate array. Use for loop to round values in each row since round takes 1 D array
-        for index, row in enumerate(influence_ordinates_arr):
-            influence_ordinates_arr[index] = np.round(row, 2)
+        # convert outputs to pandas Series
+        axle_locations_pdsr = pd.Series(axle_locations_arr.tolist(), index=[ind + 1 for ind in range(no_of_xpoints)])
+        influence_ordinates_pdsr = pd.Series(influence_ordinates_arr.tolist(), index=[ind + 1 for ind in range(no_of_xpoints)])
 
-        debug(f"{axle_locations_arr.ndim}")
-        debug("********************")
-        debug(f"{influence_ordinates_arr.ndim}")
+        debug(axle_locations_pdsr)
+        debug("------------------------")
+        debug(influence_ordinates_pdsr)
 
-        return axle_locations_arr  # return numpy array with all axle positions at each point along the beam
+        return axle_locations_pdsr, influence_ordinates_pdsr  # return 2 pandas Series with all axle positions and influence ordinates at each point along the beam
 
-
+# self test code
 if __name__ == '__main__':
     # supply testing inputs
     beam_length = 30
-    moving_interval = 0.5
-    axle_positions = [0, 1.2]
+    moving_interval = 0.1
+    axle_positions = [0, 1.2, 2.4, 3.6, 4.8, 6.0]
 
-    simulator = MovingLoadSimulator(beam_length, moving_interval, axle_positions)
+    sim_data = MovingLoadSimulator()(beam_length, moving_interval, axle_positions)
+    print(sim_data)
 
-# Next assignment - Tue 03/08/2021
-# 1. Refactor self.fn_simulate_moving_vehicle() especially output data type. Consider Series or dataFrame as output
-# 2. Add comments
-# 3. Test with more data. Prepare example data output to be checked by Spencer
-# 4. Return value
-
+# Next assignment - Tue 06/08/2021
+# 1. Test with more data.
+# 2. Prepare example data output to be checked by Spencer
