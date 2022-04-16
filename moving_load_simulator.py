@@ -67,4 +67,4 @@ if __name__ == '__main__':
     simulation_data = MovingLoadSimulator()(beam_length, moving_interval, axle_positions)
     logging.info(simulation_data)
 
-
+# Reorganize program
