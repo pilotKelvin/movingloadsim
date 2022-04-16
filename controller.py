@@ -1,4 +1,3 @@
-
 from decimal import Decimal, getcontext
 from logging import basicConfig, DEBUG, debug
 from pprint import pprint

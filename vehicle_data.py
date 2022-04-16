@@ -7,28 +7,29 @@ Author: Kelvin Macharia
 Year: 2021
 """
 
-from logging import basicConfig, DEBUG, debug, disable
+import logging
 from sys import argv
-from pprint import pprint
 from collections import namedtuple
 
-basicConfig(level=DEBUG, format=' %(message)s')
-disable()
+logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
 
+
+# disable()
 
 class vehicle_data_class:
     """
     vehicle data class. Contains or settings/properties for all load models and vehicles.
     """
 
-    def __call__(self, vehicle_type, critical_distance=None):
+    def __call__(self, vehicle_type, critical_distance=1.2):
         """
         Object of this class is called as a function and returns vehicle data
         :param vehicle_type:
         :param critical_distance: # this is a kwarg therefore optional. Only special vehicles have this parameter
         :return: vehicle_data
         """
-        vehicle_data = self.get_vehicle_data(vehicle_type, critical_distance)  # call self.get_vehicle_data to generate vehicle data requested
+        vehicle_data = self.get_vehicle_data(vehicle_type,
+                                             critical_distance)  # call self.get_vehicle_data to generate vehicle data requested
         return vehicle_data
 
     def get_vehicle_data(self, vehicle_type, critical_distance):
@@ -127,15 +128,15 @@ class vehicle_data_class:
 
             return vehicle_data  # return named tuple containing vehicle data requested
 
+
 # self test code
 if __name__ == "__main__":
     if len(argv) > 1:
         # run from command line
         vehicle_data = vehicle_data_class()(str(argv[1]), float(argv[2]))
-        pprint(vehicle_data['vehicle_type'])
+        logging.info(vehicle_data['vehicle_type'])
     else:
         vehicle_data = vehicle_data_class()("sv80", 1.2)
-        pprint(vehicle_data)
+        logging.info(vehicle_data)
 
-# Next task - Done on 06/08/2021
-# 1. when vehicle spacing is none. What's next?
+# Next task
