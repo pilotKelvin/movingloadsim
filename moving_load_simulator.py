@@ -56,14 +56,14 @@ class MovingLoadSimulator:
         Computes shear influence ordinates
         :param sim_data:
         :param beam_length_:
-        :return influence_ordinates_arr:
+        :return influence_ordinates_np:
         """
         # compute influence lines
-        influence_ordinates_arr = np.round(((beam_length_ - sim_data) / beam_length_), decimals=2) # (L - x)/L
-        influence_ordinates_arr[influence_ordinates_arr > 1] = 0  # filter out values greater than 1
+        influence_ordinates_np = np.round(((beam_length_ - sim_data) / beam_length_), decimals=2) # (L - x)/L
+        influence_ordinates_np[influence_ordinates_np > 1] = 0  # filter out values greater than 1
         # store the two array outputs in a named tuple for ease of retrieval
 
-        return influence_ordinates_arr  # return a tuple of 2 named tuple
+        return influence_ordinates_np  # return a tuple of 2 named tuple
 
     def moment_influence_ordinates(self):
         pass
