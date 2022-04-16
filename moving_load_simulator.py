@@ -56,7 +56,7 @@ class MovingLoadSimulator:
         Computes shear influence ordinates
         :param sim_data:
         :param beam_length_:
-        :return:
+        :return influence_ordinates_arr:
         """
         # compute influence lines
         influence_ordinates_arr = np.round(((beam_length_ - sim_data) / beam_length_), decimals=2) # (L - x)/L
