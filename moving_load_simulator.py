@@ -52,7 +52,12 @@ class MovingLoadSimulator:
         return axle_locations_arr
 
     def shear_influence_ordinates(self, sim_data:np, beam_length_: float) -> np:
-
+        """
+        Computes shear influence ordinates
+        :param sim_data:
+        :param beam_length_:
+        :return:
+        """
         # compute influence lines
         influence_ordinates_arr = np.round(((beam_length_ - sim_data) / beam_length_), decimals=2) # (L - x)/L
         influence_ordinates_arr[influence_ordinates_arr > 1] = 0  # filter out values greater than 1
