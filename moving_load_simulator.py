@@ -22,16 +22,18 @@ class MovingLoadSimulator:
         self.moving_interval = moving_interval
         self.axle_positions = np.array(axle_positions)
 
-        self.sim_data = self.fn_simulate_moving_vehicle(self.beam_length, self.moving_interval, self.axle_positions)
+        self.x_positions_np = self.fn_simulate_moving_vehicle(self.beam_length, self.moving_interval, self.axle_positions)
+        self.shear_ordinates_np = self.shear_influence_ordinates(self.x_positions_np, self.beam_length)
 
-        return self.sim_data
+        self.simulation_data_namedtuple = namedtuple("simulation_data", ["axle_locations_arr", "shear_ordinates_np"])
+        self.simulation_data_namedtuple = self. simulation_data_namedtuple(self.x_positions_np, self.shear_ordinates_np)
+        return self.simulation_data_namedtuple
 
     def fn_simulate_moving_vehicle(self, beam_length_: float, moving_interval_: float, axle_positions_: np) -> np:
         """
-        This function generates position of each axle along the beam as the vehicle move
+        This function generates position of each axle along the beam as the vehicle move.
         :param beam_length_:
         :param moving_interval_:
-        :param axle_positions_:
         :return simulation_data:
         """
         # Generate points along the beam at the moving interval provided
@@ -47,24 +49,30 @@ class MovingLoadSimulator:
             positions = np.round(point_x - axle_positions_, 2)  # compute each axle position in relation to point_x except for first axle
             axle_locations_arr[index] = positions  # append each axle position to axle_location_arr
 
+        return axle_locations_arr
+
+    def shear_influence_ordinates(self, sim_data:np, beam_length_: float) -> np:
+
         # compute influence lines
-        influence_ordinates_arr = axle_locations_arr.copy()  # make a copy of axle locations
-        influence_ordinates_arr = np.round(((beam_length_ - influence_ordinates_arr) / beam_length_), decimals=2) # (L - x)/L
+        influence_ordinates_arr = np.round(((beam_length_ - sim_data) / beam_length_), decimals=2) # (L - x)/L
         influence_ordinates_arr[influence_ordinates_arr > 1] = 0  # filter out values greater than 1
         # store the two array outputs in a named tuple for ease of retrieval
-        simulation_data = namedtuple("simulation_data", ["axle_locations_arr", "influence_ordinates_arr"])
-        simulation_data = simulation_data(axle_locations_arr, influence_ordinates_arr)
 
-        return simulation_data  # return a tuple of 2 named tuple
+        return influence_ordinates_arr  # return a tuple of 2 named tuple
+
+    def moment_influence_ordinates(self):
+        pass
 
 # self test code
 if __name__ == '__main__':
     # supply testing inputs
     beam_length = 30
     moving_interval = 1.0
-    axle_positions = [0, 1.2, 2.4, 3.6, 4.8, 6.0]
+    axle_positions = [0, 1.2]
 
     simulation_data = MovingLoadSimulator()(beam_length, moving_interval, axle_positions)
-    logging.info(simulation_data)
+    logging.info(simulation_data.axle_locations_arr)
+    logging.info("**********************************")
+    logging.info(simulation_data.shear_ordinates_np)
 
-# Reorganize program
+# moment ordinates function

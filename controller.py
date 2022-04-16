@@ -16,7 +16,7 @@ class Controller:
         self.vehicle_data = vehicle.vehicle_data
 
         simulator = mls(beam_length, moving_interval, self.vehicle_data.axle_positions)
-        self.simulation_data = simulator.simulation_data
+        self.simulation_data = simulator.simulation_data_namedtuple
 
     def __str__(self):
         return "controller class"
