@@ -26,3 +26,5 @@ if __name__ == "__main__":
 
     # pprint(controller.vehicle_data)
     pprint(controller.simulation_data)
+
+# test with controller class
